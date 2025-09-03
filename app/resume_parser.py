@@ -84,6 +84,19 @@ def analyze_resume(resume_text):
         # Create the prompt for the analysis
         prompt = f"""Analyze this resume and provide detailed feedback in JSON format with the following structure:
         {{
+            "atsScore": {{
+                "score": 85,
+                "scoreBreakdown": {{
+                    "keywords": 20,
+                    "formatting": 15,
+                    "experience": 25,
+                    "skills": 15,
+                    "education": 10
+                }},
+                "improvements": [
+                    "Specific suggestions to improve ATS score"
+                ]
+            }},
             "feedback": {{
                 "overallAssessment": {{
                     "strengths": ["list of key strengths"],
@@ -119,7 +132,14 @@ def analyze_resume(resume_text):
         Resume text:
         {resume_text}
 
-        Provide specific, actionable feedback for each section. Focus on strengths and areas for improvement.
+        Provide an ATS (Applicant Tracking System) score out of 100 based on:
+        1. Keywords relevance (0-25 points): How well the resume uses industry-specific keywords
+        2. Formatting (0-20 points): Simple, clean formatting that ATS can parse
+        3. Experience section (0-25 points): Clear job titles, companies, dates, and achievements
+        4. Skills section (0-20 points): Relevant technical and soft skills
+        5. Education (0-10 points): Clear education details
+
+        Also provide specific, actionable feedback for each section. Focus on strengths and areas for improvement.
         Keep the response concise but detailed. Ensure the JSON is properly formatted and complete."""
 
         messages = [

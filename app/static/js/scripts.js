@@ -69,6 +69,118 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
 
     console.log("Processed feedback:", feedback); // Debug log
 
+    // Add ATS Score at the top
+    if (feedback.atsScore) {
+      const atsSection = document.createElement("div");
+      atsSection.className = "ats-score-section";
+
+      const scoreClass =
+        feedback.atsScore.score >= 80
+          ? "excellent"
+          : feedback.atsScore.score >= 60
+          ? "good"
+          : feedback.atsScore.score >= 40
+          ? "fair"
+          : "poor";
+
+      atsSection.innerHTML = `
+        <div class="ats-score-container">
+          <h2>ATS Compatibility Score</h2>
+          <div class="score-display">
+            <div class="score-circle ${scoreClass}">
+              <span class="score-number">${feedback.atsScore.score}</span>
+              <span class="score-total">/100</span>
+            </div>
+            <div class="score-text">
+              <h3>Your Resume Score</h3>
+              <p class="score-description">
+                ${
+                  feedback.atsScore.score >= 80
+                    ? "Excellent! Your resume is highly ATS-friendly."
+                    : feedback.atsScore.score >= 60
+                    ? "Good score! Some improvements can make it even better."
+                    : feedback.atsScore.score >= 40
+                    ? "Fair score. Several improvements needed for better ATS compatibility."
+                    : "Poor score. Significant improvements needed for ATS compatibility."
+                }
+              </p>
+            </div>
+          </div>
+          
+          <div class="score-breakdown">
+            <h3>Score Breakdown</h3>
+            <div class="breakdown-grid">
+              <div class="breakdown-item">
+                <span class="breakdown-label">Keywords</span>
+                <div class="breakdown-bar">
+                  <div class="breakdown-fill" style="width: ${
+                    (feedback.atsScore.scoreBreakdown.keywords / 25) * 100
+                  }%"></div>
+                </div>
+                <span class="breakdown-score">${
+                  feedback.atsScore.scoreBreakdown.keywords
+                }/25</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Formatting</span>
+                <div class="breakdown-bar">
+                  <div class="breakdown-fill" style="width: ${
+                    (feedback.atsScore.scoreBreakdown.formatting / 20) * 100
+                  }%"></div>
+                </div>
+                <span class="breakdown-score">${
+                  feedback.atsScore.scoreBreakdown.formatting
+                }/20</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Experience</span>
+                <div class="breakdown-bar">
+                  <div class="breakdown-fill" style="width: ${
+                    (feedback.atsScore.scoreBreakdown.experience / 25) * 100
+                  }%"></div>
+                </div>
+                <span class="breakdown-score">${
+                  feedback.atsScore.scoreBreakdown.experience
+                }/25</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Skills</span>
+                <div class="breakdown-bar">
+                  <div class="breakdown-fill" style="width: ${
+                    (feedback.atsScore.scoreBreakdown.skills / 20) * 100
+                  }%"></div>
+                </div>
+                <span class="breakdown-score">${
+                  feedback.atsScore.scoreBreakdown.skills
+                }/20</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">Education</span>
+                <div class="breakdown-bar">
+                  <div class="breakdown-fill" style="width: ${
+                    (feedback.atsScore.scoreBreakdown.education / 10) * 100
+                  }%"></div>
+                </div>
+                <span class="breakdown-score">${
+                  feedback.atsScore.scoreBreakdown.education
+                }/10</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ats-improvements">
+            <h3>Key Improvements to Boost Your ATS Score</h3>
+            <ul class="improvement-list">
+              ${feedback.atsScore.improvements
+                .map((improvement) => `<li>${improvement}</li>`)
+                .join("")}
+            </ul>
+          </div>
+        </div>
+      `;
+      resultsDiv.appendChild(atsSection);
+    }
+
     // Add overall impression
     const overallSection = document.createElement("div");
     overallSection.className = "section";
